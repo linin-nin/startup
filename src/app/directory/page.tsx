@@ -2,12 +2,12 @@
 
 import React from 'react'
 import { createDirectus, rest, readItems } from '@directus/sdk';
-import Image from 'next/image';
 import Link from 'next/link';
+
 
 const client = createDirectus("https://startupnation.panel.dreamslab.dev/").with(rest());
 
-function Data() {
+function fetchData() {
     return client.request(
       readItems("Startups", {
         fields: ['*']
@@ -16,17 +16,14 @@ function Data() {
   }
 
 const page = async() => {
-    const data = await Data()
-    console.log(data)
+    const data = await fetchData()
   return (
-    <main className='flex max-w-[600px] justify-center items-center'>
-        <div >
+    <main className='flex  w-full justify-center pt-20 items-center'>
+        <div>
             {data.map((item) => (
-                <div key={item.id} className='bg-green-300 gap-6 mb-10 rounded-md'>
+                <div key={item.id} className=' gap-6 mb-2 rounded-md'>
                     <Link href={`/directory/${item.slug}`}>
                     <h1>{item.company_name}</h1>
-                    <h3>{item.title}</h3>
-                    <p>{item.dirscription}</p>
                     </Link>
                 </div>
             ))}
